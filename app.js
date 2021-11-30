@@ -42,31 +42,80 @@
 // btn.addEventListener('click', getLaunches);
 
 ////ERROR HANDLING EXAMPLE WITH RANDOM DOG API////
-async function getRandomDog() {
-  const res = await axios.get('https://dog.ceo/api/breeds/image/random');
-  console.log(res.data);
-  const img = document.querySelector("#dog");
-  img.src = res.data.message;
+// async function getRandomDog() {
+//   const res = await axios.get('https://dog.ceo/api/breeds/image/random');
+//   console.log(res.data);
+//   const img = document.querySelector("#dog");
+//   img.src = res.data.message;
+// }
+
+// async function getDogByBreed(breed){
+//   try{
+//     //const url = `https://dog.ceo/api/breed/${breed}/images/random`;
+//     const res = await axios.get(`https://dog.ceo/api/breed/${breed}/images/random`);
+//     const img = document.querySelector("#dog");
+//     img.src = res.data.message;
+//   }catch(e){
+//     console.log(e)
+//     alert("BREED NOT FOUND"); 
+//     getRandomDog();   
+//   }
+// }
+
+// const form = document.querySelector('#searchForm');
+// const input = document.querySelector('#search');
+// form.addEventListener("submit", function(e){
+//   e.preventDefault();
+//   getDogByBreed(input.value);
+//   input.value = '';
+// })
+
+//////AXIOS POST/////
+// async function getUsers() {
+//   const res = await axios.get('https://reqres.in/api/users');
+//   console.log(res);
+// }
+
+// async function createUser(){
+//   const res = await axios.post('https://reqres.in/api/users', { username: "Butters", email:"butters@gmail.com", age:1 });
+//   console.log(res);
+// }
+// createUser();
+
+///////HACK OR SNOOZE API ////////
+async function getUsers(token) {
+  const res = await axios.get('https://hack-or-snooze-v3.herokuapp.com/users', { params: { token } });
+  console.log(res);
 }
 
-async function getDogByBreed(breed){
-  try{
-    //const url = `https://dog.ceo/api/breed/${breed}/images/random`;
-    const res = await axios.get(`https://dog.ceo/api/breed/${breed}/images/random`);
-    const img = document.querySelector("#dog");
-    img.src = res.data.message;
-  }catch(e){
-    console.log(e)
-    alert("BREED NOT FOUND"); 
-    getRandomDog();   
+async function signUp(name, username, password){
+  const res = await axios.post('https://hack-or-snooze-v3.herokuapp.com/signup', { user: { name, username, password } })
+  console.log(res);
+}
+//signUp('Bob', 'Blobfish', 'password' );
+
+async function login(username, password){
+  const res = await axios.post('https://hack-or-snooze-v3.herokuapp.com/login', { user: { username, password } })
+  console.log(res);
+  return res.data.token    
+}
+
+//login('Blobfish', 'password')
+
+async function getUsersWithAuth(){
+  const token = await login('Blobfish', 'password');
+  getUsers(token);
+}
+
+// I don't think the story is actually being created.
+async function createStory() {
+  const token = await login ('Blobfish', 'password');
+  const newStory = {
+    token,
+    story: {
+      author: 'Blobfish',
+      title: 'A Sailor Went To The Sea',
+      url: 'https://www.blobfisharebeautiful.com'
+    }
   }
 }
-
-const form = document.querySelector('#searchForm');
-const input = document.querySelector('#search');
-form.addEventListener("submit", function(e){
-  e.preventDefault();
-  getDogByBreed(input.value);
-  input.value = '';
-})
-
